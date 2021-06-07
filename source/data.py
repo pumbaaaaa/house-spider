@@ -1,4 +1,5 @@
 from .lianjia import LianJiaParser
+from common.util.html import get_html
 
 
 class Data:
@@ -19,14 +20,19 @@ class Data:
         conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset='utf8')
         return conn
 
-    def lj_save(self, html, url, req_url):
-        lj = LianJiaParser(url, req_url)
+    def lj_save(self, html, url, req_url, first_page_flag):
+        lj = LianJiaParser(url, req_url, first_page_flag)
 
-        houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg = lj.feed(
+        houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage = lj.feed(
             html)
-        for j in range(len(houseName)):
-            print(houseName[j], villageName[j], houseNote[j], houseTotalPrice[j], houseUnitPrice[j], houseAge[j],
-                  houseArea[j], houseSquare[j], houseLink[j], houseImg[j])
+
+        self.save_mysql('链家', houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea,
+                        houseSquare, houseLink, houseImg)
+
+        with open("test.html") as file:
+            html = file.read()
+            houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage = lj.feed(html)
+            print(houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage)
 
     def save_mysql(self, webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge,
                    houseArea, houseSquare, houseLink, houseImg):
