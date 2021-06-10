@@ -1,5 +1,4 @@
 from .lianjia import LianJiaParser
-from common.util.html import get_html
 
 
 class Data:
@@ -21,6 +20,7 @@ class Data:
         return conn
 
     def lj_save(self, html, url, req_url, first_page_flag):
+        print(req_url)
         lj = LianJiaParser(url, req_url, first_page_flag)
 
         houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage = lj.feed(
@@ -28,11 +28,6 @@ class Data:
 
         self.save_mysql('链家', houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea,
                         houseSquare, houseLink, houseImg)
-
-        with open("test.html") as file:
-            html = file.read()
-            houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage = lj.feed(html)
-            print(houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage)
 
     def save_mysql(self, webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge,
                    houseArea, houseSquare, houseLink, houseImg):

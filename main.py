@@ -17,13 +17,14 @@ if __name__ == '__main__':
     url = config.get('website', 'lj')
     for area in lj_area.split(','):
         req_url = config.get('website', 'req_lj').format(area)
-        html = get_html(url)
+        html = get_html(req_url)
         maxPage = data.lj_save(html, url, req_url, True)
 
-        for i in range(maxPage):
-            if i > 1:
-                url = req_url.format('pg' + str(i))
-                html = get_html(url)
-                data.lj_save(html, url, req_url, False)
+        if maxPage is not None:
+            for i in range(maxPage):
+                if i > 1:
+                    url = req_url.format('pg' + str(i))
+                    html = get_html(url)
+                    data.lj_save(html, url, req_url, False)
 
-        time.sleep(random.randint(1, 20))
+        time.sleep(random.randint(1, 10))

@@ -1,5 +1,5 @@
 from html.parser import HTMLParser
-
+from ast import literal_eval
 
 class LianJiaParser(HTMLParser):
 
@@ -31,9 +31,10 @@ class LianJiaParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "span":
             self.flag.append("span")
-        elif tag == 'a' and "data-page" in [x[0] for x in attrs] and self.is_first_page:
+        elif tag == 'div' and "page-data" in [x[0] for x in attrs] and self.is_first_page:
             # 分页
-            self.flag.append("page")
+            # print(tag, attrs)
+            self.maxPage = literal_eval(str(attrs[3][1]))['totalPage']
         elif tag == 'a' and ("href", self.req_url[len(self.url):]) in attrs and ("class", "selected") in attrs:
             # 区域
             self.flag.append("houseArea")
@@ -75,10 +76,6 @@ class LianJiaParser(HTMLParser):
                 if len(self.flag) > 0 and self.flag[-1] == "houseUnitPrice":
                     self.houseUnitPrice.append(self.span)
                     self.flag.pop()
-            elif self.flag[-1] == "page":
-                if self.maxPage < int(data):
-                    self.maxPage = int(data)
-                self.flag.pop()
             elif self.flag[-1] == "houseArea":
                 self.houseArea = data
                 self.flag.pop()
