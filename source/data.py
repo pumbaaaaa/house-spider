@@ -28,10 +28,11 @@ class Data:
 
         self.save_mysql('链家', houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea,
                         houseSquare, houseLink, houseImg)
+        return maxPage
 
     def save_mysql(self, webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge,
                    houseArea, houseSquare, houseLink, houseImg):
-        insert_sql = """insert into {}(webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, 
+        insert_sql = """insert ignore into {}(webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, 
         houseAge, houseArea, houseSquare, houseLink, houseImg) values""".format(
             "t_house")
         conn = self.get_connection()
@@ -50,7 +51,7 @@ class Data:
         saved_rows = 0
         if len(houseName) > 0:
             saved_rows = cursor.execute(insert_sql)
-        print(webName + 'saved' + str(saved_rows) + 'rows')
+        print(webName + ' saved ' + str(saved_rows) + ' rows')
         conn.commit()
         cursor.close()
         conn.close()
