@@ -1,6 +1,7 @@
 from html.parser import HTMLParser
 from ast import literal_eval
 
+
 class LianJiaParser(HTMLParser):
 
     def __init__(self, url, req_url, is_first_page):
