@@ -1,8 +1,9 @@
 import configparser
 import random
 import time
-from source.data import Data
+
 from common.util.html import get_html
+from source.data import Data
 
 
 def lj_spider(config, data):
@@ -25,10 +26,25 @@ def lj_spider(config, data):
                 html = get_html(req_url_pg)
                 data.lj_save(html, url, req_url, False)
 
-                # 暂停时间，模拟人工操作
-                time.sleep(random.randint(1, 10))
-
         # 暂停时间，模拟人工操作
+        time.sleep(random.randint(1, 10))
+
+
+def bk_spider(config, data):
+    bk_area = config.get('website', 'bk_area')
+    url = config.get('website', 'bk')
+
+    for area in bk_area.split(','):
+        req_url = config.get('website', 'req_bk').format(area)
+        html = get_html(req_url)
+        max_page = data.bk_save(html, url, req_url, True)
+
+        for i in range(max_page + 1):
+            if i > 1:
+                req_url_pg = config.get('website', 'req_bk_pg').format(area, str(i))
+                html = get_html(req_url_pg)
+                data.bk_save(html, url, req_url, False)
+
         time.sleep(random.randint(1, 10))
 
 
@@ -42,4 +58,5 @@ if __name__ == '__main__':
     # 获取数据源
     data = Data(config)
 
-    lj_spider(config, data)
+    # lj_spider(config, data)
+    bk_spider(config, data)

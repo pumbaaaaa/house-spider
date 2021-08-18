@@ -1,3 +1,4 @@
+from .beike import BeiKeParser
 from .lianjia import LianJiaParser
 
 
@@ -28,6 +29,18 @@ class Data:
 
         self.save_mysql('链家', houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea,
                         houseSquare, houseLink, houseImg)
+        return maxPage
+
+    def bk_save(self, html, url, req_url, first_page_flag):
+        print(req_url)
+        bk = BeiKeParser(url, req_url, first_page_flag)
+
+        houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea, houseSquare, houseLink, houseImg, maxPage = bk.feed(
+            html)
+
+        self.save_mysql('贝壳', houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge, houseArea,
+                        houseSquare, houseLink, houseImg)
+
         return maxPage
 
     def save_mysql(self, webName, houseName, villageName, houseNote, houseTotalPrice, houseUnitPrice, houseAge,
