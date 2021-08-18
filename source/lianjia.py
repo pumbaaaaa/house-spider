@@ -93,7 +93,8 @@ class LianJiaParser(HTMLParser):
                 self.houseTotalPrice.append(self.span + data)
                 self.span = ""
                 self.flag.pop()
-            elif len(self.flag) > 0 and self.flag[-1] == "houseNote":
+
+            if len(self.flag) > 0 and self.flag[-1] == "houseNote":
                 # print(str(data))
                 self.houseNoteTmp = self.houseNoteTmp + data
                 for s in str(data).split("|"):
