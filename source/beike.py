@@ -47,7 +47,7 @@ class BeiKeParser(HTMLParser):
                     self.houseName.append(attr[1])
                 elif attr[0] == "href":
                     self.houseLink.append(attr[1])
-        elif tag == "div" and ("class", "totalPrice") in attrs:
+        elif tag == "div" and ("class", "totalPrice totalPrice2") in attrs:
             self.flag.append("houseTotalPrice_2")
         elif tag == "div" and ("class", "unitPrice") in attrs:
             self.flag.append("houseUnitPrice_2")

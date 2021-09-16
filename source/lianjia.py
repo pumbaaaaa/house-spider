@@ -51,7 +51,7 @@ class LianJiaParser(HTMLParser):
         elif tag == "div" and ("class", "houseInfo") in attrs:
             # 说明
             self.flag.append("houseNote")
-        elif tag == "div" and ("class", "totalPrice") in attrs:
+        elif tag == "div" and ("class", "totalPrice totalPrice2") in attrs:
             # 总价
             self.flag.append("houseTotalPrice")
         elif tag == "div" and ("class", "unitPrice") in attrs:

@@ -58,5 +58,5 @@ if __name__ == '__main__':
     # 获取数据源
     data = Data(config)
 
-    lj_spider(config, data)
+    # lj_spider(config, data)
     bk_spider(config, data)
